@@ -10,7 +10,6 @@ async function getData(req, res, next) {
     result = await Rusher.find();
     res.status(200).send(JSON.stringify(result));
   } catch (err) {
-    console.log(err);
     res.status(500).send(err);
   }
 }
@@ -20,7 +19,6 @@ async function getRushersByTDs(req, res, next) {
     result = await Rusher.find().sort({td: -1});
     res.status(200).send(JSON.stringify(result));
   } catch (err) {
-    console.log(err);
     res.status(500).send(err);
   }
 }
@@ -30,7 +28,6 @@ async function getRushersByYards(req, res, next) {
     result = await Rusher.find().sort({yds: -1});
     res.status(200).send(JSON.stringify(result));
   } catch (err) {
-    console.log(err);
     res.status(500).send(err);
   }
 }
@@ -40,7 +37,6 @@ async function getRushersByLong(req, res, next) {
     result = await Rusher.find().sort({long: -1});
     res.status(200).send(JSON.stringify(result));
   } catch (err) {
-    console.log(err);
     res.status(500).send(err);
   }
 }
@@ -57,7 +53,6 @@ router.get('/csv', getData);
 async function setupDB(req, res) {
   let checkGood = true;
   for (runner in data) {
-    //console.log(data[runner])
     yardsString = data[runner].Yds
     if (isNaN(yardsString)) {
       noCommas = yardsString.replace(/,/g, '');
@@ -91,7 +86,6 @@ async function setupDB(req, res) {
     try {
       runnerToSave.save();
     }catch (err){
-      console.log(err);
       checkGood = false;
     }
   }
