@@ -1,15 +1,34 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var cors = require('cors');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const cors = require('cors');
+const mongoose = require('mongoose');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var testAPIRouter = require('./routes/testAPI');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const testAPIRouter = require('./routes/testAPI');
+const config = require('./config');
 
-var app = express();
+const app = express();
+
+//connect to DB
+try {
+  mongoose.connect(
+    config.mongoSchema,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000,
+    },
+    () => {
+      console.log('Connected to MongoDB:', config.mongoSchema);
+    }
+  )
+} catch (err) {
+  console.log('Connecting to MongoDB:', err);
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
