@@ -5,7 +5,12 @@ const data = require('../rushing.json');
 //const rusher = require('../schemas/rusher');
 const Rusher = require('../schemas/rusher');
 
-async function getData(req, res, next) {
+/**
+ * This route gets all the data in the DB to be used in creating the CSV
+ * @param {Request} req 
+ * @param {Response} res
+ */
+async function getData(req, res) {
   try {
     result = await Rusher.find();
     res.status(200).send(JSON.stringify(result));
@@ -14,7 +19,12 @@ async function getData(req, res, next) {
   }
 }
 
-async function getRushersByTDs(req, res, next) {
+/**
+ * This fucntion returns all rushers sorted by the number of TDs they scored
+ * @param {Request} req 
+ * @param {Response} res
+ */
+async function getRushersByTDs(req, res) {
   try {
     result = await Rusher.find().sort({td: -1});
     res.status(200).send(JSON.stringify(result));
@@ -23,7 +33,12 @@ async function getRushersByTDs(req, res, next) {
   }
 }
 
-async function getRushersByYards(req, res, next) {
+/**
+ * This fnction returns all rushers sorted by yards rushed
+ * @param {Request} req 
+ * @param {Response} res  
+ */
+async function getRushersByYards(req, res) {
   try {
     result = await Rusher.find().sort({yds: -1});
     res.status(200).send(JSON.stringify(result));
@@ -32,7 +47,12 @@ async function getRushersByYards(req, res, next) {
   }
 }
 
-async function getRushersByLong(req, res, next) {
+/**
+ * This fnction returns all rushers sorted by their longest rush
+ * @param {Request} req 
+ * @param {Response} res  
+ */
+async function getRushersByLong(req, res) {
   try {
     result = await Rusher.find().sort({long: -1});
     res.status(200).send(JSON.stringify(result));
@@ -41,15 +61,11 @@ async function getRushersByLong(req, res, next) {
   }
 }
 
-router.get('/yards/', getRushersByYards);
-
-router.get('/tds/', getRushersByTDs);
-
-router.get('/long/', getRushersByLong);
-
-router.get('/csv', getData);
-
-
+/**
+ * This method adds all the json items to the DB
+ * @param {Request} req 
+ * @param {Response} res 
+ */
 async function setupDB(req, res) {
   let checkGood = true;
   for (runner in data) {
@@ -94,10 +110,11 @@ async function setupDB(req, res) {
   }
   res.status(200).send('its good');
 }
+
 router.put('/setup/', setupDB);
-
-router.get('/long/', function(req, res, next) {
-
-});
+router.get('/yards/', getRushersByYards);
+router.get('/tds/', getRushersByTDs);
+router.get('/long/', getRushersByLong);
+router.get('/csv', getData);
 
 module.exports = router;
